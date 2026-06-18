@@ -21,6 +21,8 @@
       - { port: "80",   proto: "tcp", comment: "Site web Nginx" }
       - { port: "443",  proto: "tcp", comment: "Dashboard Wazuh" }
       - { port: "3001", proto: "tcp", comment: "Uptime Kuma" }
+      - { port: "3000", proto: "tcp", comment: "Grafana" }
+      - { port: "9090", proto: "tcp", comment: "Prometheus" }
 
   tasks:
     # ---------- GARDE-FOU ----------

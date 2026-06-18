@@ -127,3 +127,19 @@
 2026/06/18 16:54:34 [notice] 1#1: signal 17 (SIGCHLD) received from 29
 2026/06/18 16:54:34 [notice] 1#1: worker process 29 exited with code 0
 2026/06/18 16:54:34 [notice] 1#1: exit
+2026/06/18 19:57:27 [notice] 1#1: using the "epoll" event method
+2026/06/18 19:57:27 [notice] 1#1: nginx/1.31.2
+2026/06/18 19:57:27 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2026/06/18 19:57:27 [notice] 1#1: OS: Linux 6.8.0-124-generic
+2026/06/18 19:57:27 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/06/18 19:57:27 [notice] 1#1: start worker processes
+2026/06/18 19:57:27 [notice] 1#1: start worker process 30
+2026/06/18 19:57:27 [notice] 1#1: start worker process 31
+2026/06/18 19:57:27 [notice] 1#1: start worker process 32
+2026/06/18 19:57:27 [notice] 1#1: start worker process 33
+2026/06/18 19:58:16 [error] 31#31: *1 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "192.168.80.148", referrer: "http://192.168.80.148/"
+2026/06/18 19:58:22 [error] 31#31: *1 open() "/usr/share/nginx/html/3001" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /3001 HTTP/1.1", host: "192.168.80.148"
+2026/06/18 19:59:16 [error] 31#31: *1 open() "/usr/share/nginx/html/3001" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /3001 HTTP/1.1", host: "192.168.80.148"
+2026/06/18 19:59:17 [error] 31#31: *1 open() "/usr/share/nginx/html/3001" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /3001 HTTP/1.1", host: "192.168.80.148"
+2026/06/18 19:59:18 [error] 31#31: *1 open() "/usr/share/nginx/html/3001" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /3001 HTTP/1.1", host: "192.168.80.148"
+2026/06/18 19:59:18 [error] 31#31: *1 open() "/usr/share/nginx/html/3001" failed (2: No such file or directory), client: 192.168.80.1, server: localhost, request: "GET /3001 HTTP/1.1", host: "192.168.80.148"
