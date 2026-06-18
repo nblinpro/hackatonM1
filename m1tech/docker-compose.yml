@@ -1,0 +1,79 @@
+services:
+# --- INFRASTRUCTURE & BACKEND ---
+  m1tech-mariadb:
+    image: mariadb:10.11
+    container_name: m1tech-mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=azerty
+      - MYSQL_DATABASE=m1tech_db
+      - MYSQL_USER=nolan
+      - MYSQL_PASSWORD=azerty
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      backend-net:
+        ipv4_address: 172.30.0.10
+    restart: always
+
+  # --- MONITORING ---
+  m1tech-uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: m1tech-uptime-kuma
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - "3001:3001"
+    networks:
+      backend-net:
+        ipv4_address: 172.30.0.30
+    restart: always
+    healthcheck:
+      test: ["CMD", "node", "extra/healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # --- REVERSE PROXY ---
+  m1tech-nginx:
+    image: nginx:alpine
+    container_name: m1tech-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/html:/usr/share/nginx/html:ro
+    networks:
+      backend-net:
+        ipv4_address: 172.30.0.20
+    restart: always
+    depends_on:
+      - m1tech-mariadb
+      - m1tech-uptime-kuma
+
+# --- BACKEND PHP (Pour tester la BDD) ---
+  m1tech-php:
+    image: php:8.2-fpm-alpine
+    container_name: m1tech-php
+    command: sh -c "docker-php-ext-install pdo pdo_mysql && php-fpm" # <--- AJOUTE CETTE LIGNE
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html:ro
+    networks:
+      backend-net:
+        ipv4_address: 172.30.0.15
+    restart: always
+    depends_on:
+      - m1tech-mariadb
+
+networks:
+  backend-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  mariadb_data:
+  uptime_kuma_data:
