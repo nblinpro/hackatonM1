@@ -106,6 +106,86 @@ ansible-playbook wazuh_agent.yml
 
 * Active le module **FIM (File Integrity Monitoring)** en temps réel sur les répertoires sensibles.
 
+## 🔍 Étape 4 : Activation du module de détection des vulnérabilités
+
+Afin de permettre au SOC de détecter automatiquement les vulnérabilités connues (CVE) affectant le système Ubuntu surveillé, activez le module **Vulnerability Detector** de Wazuh.
+
+### Modification de la configuration du Manager
+
+Ouvrez le fichier de configuration du Manager :
+
+```bash
+nano ~/hackatonM1/wazuh-docker/single-node/config/wazuh_cluster/wazuh_manager.conf
+```
+
+Descendez jusqu'à la fin du fichier et repérez la balise de fermeture :
+
+```xml
+</ossec_config>
+```
+
+Ajoutez le bloc suivant **juste avant cette balise** :
+
+```xml
+<vulnerability-detector>
+  <enabled>yes</enabled>
+  <interval>5m</interval>
+  <min_full_scan_interval>6h</min_full_scan_interval>
+  <run_on_start>yes</run_on_start>
+
+  <provider name="canonical">
+    <enabled>yes</enabled>
+    <os>noble</os>
+    <update_interval>1h</update_interval>
+  </provider>
+</vulnerability-detector>
+```
+
+Le bas du fichier doit alors ressembler à ceci :
+
+```xml
+<vulnerability-detector>
+  <enabled>yes</enabled>
+  <interval>5m</interval>
+  <min_full_scan_interval>6h</min_full_scan_interval>
+  <run_on_start>yes</run_on_start>
+
+  <provider name="canonical">
+    <enabled>yes</enabled>
+    <os>noble</os>
+    <update_interval>1h</update_interval>
+  </provider>
+</vulnerability-detector>
+
+</ossec_config>
+```
+
+Enregistrez puis quittez l'éditeur :
+
+* `Ctrl + O`
+* `Entrée`
+* `Ctrl + X`
+
+### Application de la configuration
+
+Redémarrez ensuite le conteneur Wazuh Manager afin qu'il recharge sa configuration :
+
+```bash
+cd ~/hackatonM1/wazuh-docker/single-node/
+sudo docker compose restart wazuh.manager
+```
+
+### Vérification
+
+Quelques minutes après le redémarrage, les premières données de vulnérabilités devraient être visibles dans l'interface Wazuh :
+
+```text
+Security Events → Vulnerabilities
+```
+
+Le moteur analysera les paquets installés sur les agents et les comparera aux bases de vulnérabilités Canonical pour Ubuntu 24.04 LTS (Noble Numbat).
+
+
 ---
 
 # 📊 Cartographie des accès de l'infrastructure
