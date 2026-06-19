@@ -121,10 +121,14 @@ services:
     container_name: mariadb-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-SuperSecurePassword2026!}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-m1tech_db}
-      MYSQL_USER: ${MYSQL_USER:-m1tech_user}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-UserSecurePassword2026!}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      #MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-SuperSecurePassword2026!}
+      #MYSQL_DATABASE: ${MYSQL_DATABASE:-m1tech_db}
+      #MYSQL_USER: ${MYSQL_USER:-m1tech_user}
+      #MYSQL_PASSWORD: ${MYSQL_PASSWORD:-UserSecurePassword2026!}
     volumes:
       - mariadb_data:/var/lib/mysql
   node-exporter:
@@ -170,7 +174,8 @@ services:
     restart: always
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-Grafana2026!}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      #- GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-Grafana2026!}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
